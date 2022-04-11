@@ -28,6 +28,6 @@ export class Staff {
   }
 
   async validatePassword(password: string) {
-    return await argon2.verify(password, this.password);
+    return await argon2.verify(this.password, password);
   }
 }

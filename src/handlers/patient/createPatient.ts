@@ -1,6 +1,5 @@
 import { Request, response, Response } from "express";
 import Joi from "joi";
-import { JoinColumn } from "typeorm";
 import { Patient } from "../../entity/patient";
 import { AppDataSource } from "../../service/data-source";
 
