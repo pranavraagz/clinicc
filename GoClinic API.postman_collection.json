@@ -44,15 +44,38 @@
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
+					"response": [
+						{
+							"name": "Create Patient",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Rahul Sharma\",\r\n    \"date_of_birth\": \"2021-06-21T18:52:21.000Z\",\r\n    \"phone\": \"9123456789\",\r\n    \"sex\": \"male\",\r\n\r\n    // Optional parameters: \r\n    \"height\": \"string value\",\r\n    \"weight\": \"string value\",\r\n    \"bp\": \"180/90\",\r\n    \"address\": \"No. 9 Tirumurth St. \",\r\n    \"altphone\": \"9696969696\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/patient/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"patient",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
 		},
