@@ -9,8 +9,8 @@ export class Appointment {
   @Column({ type: "timestamptz" })
   startTime: Date;
 
-  @Column({ type: "timestamptz" })
-  endTime: Date;
+  @Column()
+  duration: number; // in seconds
 
   @ManyToOne(() => Doctor, (doctor) => doctor.appointments)
   doctor: Doctor;

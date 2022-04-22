@@ -121,7 +121,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"start\": \"2022-11-18T14:13:50.000Z\",\r\n    \"end\": \"2022-11-18T14:03:50.000Z\",\r\n    \"doctor_id\": 1,\r\n    \"patient_id\": 2\r\n}",
+							"raw": "{\r\n    \"start\": \"2022-11-18T14:13:50.000Z\",\r\n    \"duration_s\": \"900\",\r\n    \"doctor_id\": 1,\r\n    \"patient_id\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
