@@ -76,6 +76,30 @@
 							"body": null
 						}
 					]
+				},
+				{
+					"name": "Get Patient by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
