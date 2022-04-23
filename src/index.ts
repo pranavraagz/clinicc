@@ -1,9 +1,12 @@
 import express from "express";
+import * as dotenv from "dotenv";
 import fileUpload from "express-fileupload";
 import { apiRouter } from "./routes/api";
 import { AppDataSource } from "./service/data-source";
 
-const PORT = 8000;
+dotenv.config();
+
+const PORT = process.env.PORT ?? 8000;
 
 const app = express();
 
