@@ -19,9 +19,25 @@ export async function getAllAppointmentByDate(req: Request, res: Response) {
   // add 24 hours
   const datePlus24 = new Date(date.getTime() + 1000 * 60 * 60 * 24);
 
-  const result = await AppDataSource.manager
-    .getRepository(Appointment)
-    .findBy({ startTime: Between(date, datePlus24) });
+  const result = await AppDataSource.manager.getRepository(Appointment).find({
+    where: { startTime: Between(date, datePlus24) },
+    relations: { patient: true, doctor: true },
+    select: {
+      doctor: {
+        id: true,
+        name: true,
+      },
+      patient: {
+        name: true,
+        phone: true,
+        altphone: true,
+        id: true,
+      },
+    },
+  });
+
+  // const result = await AppDataSource.manager
+  // .createQueryBuilder(Appointment, "app").
 
   res.status(200).json(result);
 }
