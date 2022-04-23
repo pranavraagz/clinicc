@@ -16,6 +16,8 @@ export class Patient {
   @Column()
   altphone: string;
   @Column()
+  email: string;
+  @Column()
   height: number;
   @Column()
   weight: number;

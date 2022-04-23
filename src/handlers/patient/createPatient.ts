@@ -13,6 +13,7 @@ export async function createPatient(req: Request, res: Response) {
     weight: Joi.number(),
     address: Joi.string(),
     altphone: Joi.string(),
+    email: Joi.string().email(),
     bp: Joi.string(),
   });
 
@@ -31,6 +32,7 @@ export async function createPatient(req: Request, res: Response) {
     weight,
     address,
     altphone,
+    email,
     bp,
   } = value;
 
@@ -45,6 +47,7 @@ export async function createPatient(req: Request, res: Response) {
   patient.address = address ?? "";
   patient.altphone = altphone ?? "";
   patient.bp = bp ?? "";
+  patient.email = email ?? "";
 
   await AppDataSource.manager.save(patient);
 
