@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import Joi from "joi";
 import { Appointment } from "../../entity/appointment";
 import { AppDataSource } from "../../service/data-source";
@@ -14,7 +14,7 @@ export async function createAppointment(req: Request, res: Response) {
   const { value, error } = schema.validate(req.body);
   if (error != null) {
     console.log(error);
-    response.status(401).json({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 
   const { start, duration_s, doctor_id, patient_id } = value;

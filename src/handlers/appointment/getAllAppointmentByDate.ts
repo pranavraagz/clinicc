@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import Joi from "joi";
 import { Between } from "typeorm";
 import { Appointment } from "../../entity/appointment";
@@ -12,7 +12,7 @@ export async function getAllAppointmentByDate(req: Request, res: Response) {
   const { value, error } = schema.validate(req.body);
   if (error != null) {
     console.log(error);
-    response.status(401).json({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 
   const date = new Date(value.date);

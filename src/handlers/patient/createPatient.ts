@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import Joi from "joi";
 import { Patient } from "../../entity/patient";
 import { AppDataSource } from "../../service/data-source";
@@ -20,7 +20,7 @@ export async function createPatient(req: Request, res: Response) {
   const { value, error } = schema.validate(req.body);
   if (error != null) {
     console.log(error);
-    response.status(401).json({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 
   const {

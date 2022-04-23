@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 import Joi from "joi";
 import { Appointment } from "../../entity/appointment";

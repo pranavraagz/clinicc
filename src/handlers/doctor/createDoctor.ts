@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import Joi from "joi";
 import { JoinColumn } from "typeorm";
 import { Doctor } from "../../entity/doctor";
@@ -16,7 +16,7 @@ export async function createDoctor(req: Request, res: Response) {
   const { value, error } = schema.validate(req.body);
   if (error != null) {
     console.log(error);
-    response.status(401).json({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 
   const { name, phone, altphone, address } = value;
