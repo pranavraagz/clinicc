@@ -12,6 +12,9 @@ export class Appointment {
   @Column()
   duration: number; // in seconds
 
+  @Column("text", { array: true, default: [] })
+  prescription_images: string[]; // in seconds
+
   @ManyToOne(() => Doctor, (doctor) => doctor.appointments)
   doctor: Doctor;
 
