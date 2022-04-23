@@ -5,7 +5,8 @@ import { AppDataSource } from "../../service/data-source";
 
 export async function searchPatientByName(req: Request, res: Response) {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string().required().min(3),
+    limit: Joi.number(),
   });
 
   const { value, error } = schema.validate(req.body);
@@ -14,13 +15,13 @@ export async function searchPatientByName(req: Request, res: Response) {
     res.status(401).json({ error: error.message });
   }
 
-  const { name } = value;
+  const { name, limit } = value;
 
   const result = await AppDataSource.manager
-    .getRepository(Patient)
-    .createQueryBuilder()
-    .select()
+    .createQueryBuilder(Patient, "patient")
+    .select(["patient.name", "patient.id"])
     .where("name ILIKE :searchTerm", { searchTerm: `%${name}%` })
+    .limit(limit ?? 10)
     .getMany();
 
   res.status(200).send(result);
