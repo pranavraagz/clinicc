@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { Patient } from "../../entity/patient";
+import { Doctor } from "../../entity/doctor";
 import { AppDataSource } from "../../service/data-source";
 
-export async function getPatient(req: Request, res: Response) {
+export async function getDoctor(req: Request, res: Response) {
   const { value, error } = Joi.object({
     id: Joi.number().required(),
   }).validate(req.params);
@@ -15,10 +15,10 @@ export async function getPatient(req: Request, res: Response) {
   const { id } = value;
 
   const patient = await AppDataSource.manager
-    .getRepository(Patient)
+    .getRepository(Doctor)
     .findOneBy({ id: parseInt(id) });
 
-  if (patient != null) {
+  if (patient) {
     res.status(200).json(patient);
   } else {
     res.sendStatus(404);
