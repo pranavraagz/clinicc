@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createUser } from "../handlers/user/createStaff";
-import { getAllUser } from "../handlers/user/getAllStaff";
-import { loginUser } from "../handlers/user/loginStaff";
+import { createUser } from "../handlers/user/createUser";
+import { getAllUser } from "../handlers/user/getAllUser";
+import { loginUser } from "../handlers/user/loginUser";
 
 export const userRouter = Router();
 
