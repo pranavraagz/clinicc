@@ -9,7 +9,7 @@ import { Appointment } from "./appointment";
 import * as argon2 from "argon2";
 
 @Entity()
-export class Staff {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()

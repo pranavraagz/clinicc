@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { Patient } from "../entity/patient";
 import { Doctor } from "../entity/doctor";
 import { Appointment } from "../entity/appointment";
-import { Staff } from "../entity/staff";
+import { User } from "../entity/user";
 
 dotenv.config();
 

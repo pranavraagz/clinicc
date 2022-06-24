@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { Staff } from "../../entity/staff";
+import { User } from "../../entity/user";
 import { AppDataSource } from "../../service/data-source";
 
-export async function createStaff(req: Request, res: Response) {
+export async function createUser(req: Request, res: Response) {
   // request validation
   const schema = Joi.object({
     name: Joi.string().required(),
@@ -33,13 +33,13 @@ export async function createStaff(req: Request, res: Response) {
   //   return;
   // }
 
-  const staff = new Staff();
-  staff.name = name;
-  staff.password = password;
-  staff.phone = phone;
+  const user = new User();
+  user.name = name;
+  user.password = password;
+  user.phone = phone;
 
   try {
-    await AppDataSource.manager.save(staff);
+    await AppDataSource.manager.save(user);
   } catch (error) {
     res.sendStatus(500).json({ error: error });
     return;

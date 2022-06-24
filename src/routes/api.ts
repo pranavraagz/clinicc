@@ -3,11 +3,11 @@ import { health } from "../handlers/health";
 import { appointmentRouter } from "./appointment";
 import { doctorRouter } from "./doctor";
 import { patientRouter } from "./patient";
-import { staffRouter } from "./staff";
+import { userRouter } from "./user";
 
 export const apiRouter = Router();
 
-apiRouter.use("/staff", staffRouter);
+apiRouter.use("/user", userRouter);
 apiRouter.use("/patient", patientRouter);
 apiRouter.use("/doctor", doctorRouter);
 apiRouter.use("/appointment", appointmentRouter);

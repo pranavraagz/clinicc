@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { Staff } from "../../entity/staff";
+import { User } from "../../entity/user";
 import { AppDataSource } from "../../service/data-source";
 import * as jwt from "jsonwebtoken";
 
-export async function loginStaff(req: Request, res: Response) {
+export async function loginUser(req: Request, res: Response) {
   // ensuring jwt secret is defined
   let secret: string;
   let expiresIn: string;
@@ -29,11 +29,11 @@ export async function loginStaff(req: Request, res: Response) {
   const { phone, password } = value;
 
   try {
-    let staffRepo = await AppDataSource.getRepository(Staff);
-    var staff = await staffRepo.findOneBy({ phone: phone });
-    if (!staff) {
+    let userRepo = await AppDataSource.getRepository(User);
+    var user = await userRepo.findOneBy({ phone: phone });
+    if (!user) {
       res.status(404).send({
-        msg: "Staff account does not exist",
+        msg: "User account does not exist",
       });
       return;
     }
@@ -43,14 +43,14 @@ export async function loginStaff(req: Request, res: Response) {
   }
 
   // validate
-  if ((await staff.validatePassword(password)) === false) {
+  if ((await user.validatePassword(password)) === false) {
     res.status(400).send({
       message: "Incorrect password",
     });
     return;
   }
 
-  const token = jwt.sign({ staff_id: staff.id }, secret, {
+  const token = jwt.sign({ id: user.id }, secret, {
     expiresIn: expiresIn,
   });
 
