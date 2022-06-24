@@ -6,14 +6,14 @@ import { Patient } from "./patient";
 export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: "timestamptz" })
+  @Column()
   startTime: Date;
 
   @Column()
   duration: number; // in seconds
 
-  @Column("text", { array: true, default: [] })
-  prescription_images: string[]; // in seconds
+  // @Column("text", { array: true, default: [] })
+  // prescription_images: string[]; // in seconds
 
   @ManyToOne(() => Doctor, (doctor) => doctor.appointments)
   doctor: Doctor;

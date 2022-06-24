@@ -40,7 +40,10 @@ export const authenticateJWT = (
       return;
     }
 
-    req.params.staff_id = payload.staff_id;
+    req.user = {
+      id: payload.id,
+      role: payload.role,
+    };
     next();
   } catch (error) {
     res.status(500).send({

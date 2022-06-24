@@ -9,6 +9,9 @@ export async function createUser(req: Request, res: Response) {
     name: Joi.string().required(),
     phone: Joi.string().required(),
     password: Joi.string().required(),
+    role: Joi.string()
+      .valid(...User.validRoles)
+      .required(),
   });
   const { value, error } = schema.validate(req.body);
   if (error != null) {
@@ -17,8 +20,7 @@ export async function createUser(req: Request, res: Response) {
     });
     return;
   }
-  const { name, phone, password } = value;
-
+  const { name, phone, password, role } = value;
   // validate username unique-ness
   // try {
   //   var existingUser = await userRepo.findOne({ username: username });
@@ -32,18 +34,17 @@ export async function createUser(req: Request, res: Response) {
   //   res.status(500).json({ error: error });
   //   return;
   // }
-
   const user = new User();
   user.name = name;
   user.password = password;
   user.phone = phone;
+  user.role = role;
 
   try {
     await AppDataSource.manager.save(user);
   } catch (error) {
-    res.sendStatus(500).json({ error: error });
+    res.status(500).json({ error: error });
     return;
   }
-
   res.sendStatus(201);
 }

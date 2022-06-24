@@ -8,8 +8,11 @@ import {
 import { Appointment } from "./appointment";
 import * as argon2 from "argon2";
 
+type UserRole = "staff" | "admin" | "superadmin";
+
 @Entity()
 export class User {
+  static validRoles = ["staff", "admin", "superadmin"];
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -18,6 +21,8 @@ export class User {
   phone: string;
   @Column()
   password: string;
+  @Column()
+  role: UserRole;
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
