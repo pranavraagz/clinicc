@@ -17,7 +17,7 @@ export class User {
   id: number;
   @Column()
   name: string;
-  @Column()
+  @Column({ unique: true })
   phone: string;
   @Column()
   password: string;

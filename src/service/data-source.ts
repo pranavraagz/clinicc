@@ -11,8 +11,13 @@ const isSynchronize: boolean = process.env.NODE_ENV != "production";
 console.log("Running in dev mode: synchronizing database...");
 
 export const AppDataSource = new DataSource({
-  type: "better-sqlite3",
-  database: "database/muthu-neuro-clinic.db",
+  type: "postgres",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT) || 5432,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   entities: [User, Patient, Doctor, Appointment],
   synchronize: isSynchronize,
+  logging: false,
 });

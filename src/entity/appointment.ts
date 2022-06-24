@@ -6,7 +6,7 @@ import { Patient } from "./patient";
 export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column({ type: "timestamptz" })
   startTime: Date;
 
   @Column()

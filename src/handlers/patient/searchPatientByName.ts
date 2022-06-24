@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Patient } from "../../entity/patient";
+import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
 export async function searchPatientByName(req: Request, res: Response) {
+  const permission = ac.can(req.user?.role).read("patient");
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
+
   const schema = Joi.object({
     name: Joi.string().required().min(3),
     limit: Joi.number(),
@@ -23,6 +29,5 @@ export async function searchPatientByName(req: Request, res: Response) {
     .where("name ILIKE :searchTerm", { searchTerm: `%${name}%` })
     .limit(limit ?? 10)
     .getMany();
-
   res.status(200).send(result);
 }

@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Patient } from "../../entity/patient";
+import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
 export async function createPatient(req: Request, res: Response) {
+  const permission = ac.can(req.user?.role).create("patient");
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
+
   const schema = Joi.object({
     name: Joi.string().required(),
     date_of_birth: Joi.date().required(),

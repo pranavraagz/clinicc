@@ -27,7 +27,7 @@ export const authenticateJWT = (
     const token = tokenHeader.split(" ")[1];
     const secret: string = process.env.JWT_SECRET!;
     try {
-      var payload: string | jwt.JwtPayload = jwt.verify(token, secret);
+      var payload = jwt.verify(token, secret);
       /**
        * if payload is string, payload.id is invalid
        * so we need to assure TypeScript that it is not a string

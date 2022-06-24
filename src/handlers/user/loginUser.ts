@@ -50,7 +50,7 @@ export async function loginUser(req: Request, res: Response) {
     return;
   }
 
-  const token = jwt.sign({ id: user.id }, secret, {
+  const token = jwt.sign({ id: user.id, role: user.role }, secret, {
     expiresIn: expiresIn,
   });
 
