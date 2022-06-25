@@ -2,9 +2,14 @@ import { Request, Response } from "express";
 import Joi from "joi";
 import { Between } from "typeorm";
 import { Appointment } from "../../entity/appointment";
+import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
 export async function getAllAppointmentByDate(req: Request, res: Response) {
+  const permission = ac.can(req.user?.role).read("appointment");
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
   const schema = Joi.object({
     date: Joi.date().required(),
   });

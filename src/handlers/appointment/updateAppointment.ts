@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Appointment } from "../../entity/appointment";
+import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
 export async function updateAppointment(req: Request, res: Response) {
+  const permission = ac.can(req.user?.role).update("appointment");
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
   const schema = Joi.object({
     id: Joi.number().required(),
     start: Joi.date().required(),
