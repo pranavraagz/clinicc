@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Doctor } from "../../entity/doctor";
+import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
 export async function getDoctor(req: Request, res: Response) {
+  const permission = ac.can(req.user?.role).read("doctor");
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
   const { value, error } = Joi.object({
     id: Joi.number().required(),
   }).validate(req.params);
