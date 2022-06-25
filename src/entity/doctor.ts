@@ -11,14 +11,10 @@ import { Appointment } from "./appointment";
 export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column("varchar")
   name: string;
-  @Column()
+  @Column("varchar", { nullable: true })
   phone: string;
-  @Column()
-  altphone: string;
-  @Column()
-  address: string;
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];

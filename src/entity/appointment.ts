@@ -15,7 +15,7 @@ export class Appointment extends BaseEntity {
   @Column({ type: "timestamptz" })
   startTime: Date;
 
-  @Column()
+  @Column("integer")
   duration: number; // in seconds
 
   // @Column("text", { array: true, default: [] })

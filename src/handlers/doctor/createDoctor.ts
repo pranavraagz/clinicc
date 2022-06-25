@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { JoinColumn } from "typeorm";
 import { Doctor } from "../../entity/doctor";
-import { Patient } from "../../entity/patient";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
@@ -14,8 +12,6 @@ export async function createDoctor(req: Request, res: Response) {
   const schema = Joi.object({
     name: Joi.string().required(),
     phone: Joi.string().required(),
-    altphone: Joi.string(),
-    address: Joi.string(),
   });
 
   const { value, error } = schema.validate(req.body);
@@ -24,14 +20,12 @@ export async function createDoctor(req: Request, res: Response) {
     res.status(401).json({ error: error.message });
   }
 
-  const { name, phone, altphone, address } = value;
+  const { name, phone } = value;
 
   const doctor = new Doctor();
 
   doctor.name = name;
   doctor.phone = phone;
-  doctor.address = address ?? "";
-  doctor.altphone = altphone ?? "";
 
   await AppDataSource.manager.save(doctor);
 

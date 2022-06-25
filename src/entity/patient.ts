@@ -11,25 +11,26 @@ import { Appointment } from "./appointment";
 export class Patient extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column("varchar")
   name: string;
-  @Column({ type: "date" })
-  dob: string;
-  @Column()
+  @Column("date")
+  dob: Date;
+  // typeorm-specific, automatically mapped to string
+  @Column("varchar")
   sex: string;
-  @Column()
+  @Column("varchar")
   phone: string;
-  @Column()
+  @Column("varchar", { nullable: true })
   altphone: string;
-  @Column()
+  @Column("varchar", { nullable: true })
   email: string;
-  @Column()
+  @Column("float4", { nullable: true })
   height: number;
-  @Column()
+  @Column("float4", { nullable: true })
   weight: number;
-  @Column()
+  @Column("varchar", { nullable: true })
   bp: string;
-  @Column()
+  @Column("varchar", { nullable: true })
   address: string;
 
   @OneToMany(() => Appointment, (appointment) => appointment.patient)

@@ -18,13 +18,13 @@ export class User extends BaseEntity {
   static validRoles = ["staff", "admin", "superadmin"];
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column("varchar")
   name: string;
-  @Column({ unique: true })
+  @Column("varchar", { unique: true })
   phone: string;
-  @Column()
+  @Column("varchar")
   password: string;
-  @Column()
+  @Column("varchar")
   role: UserRole;
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
