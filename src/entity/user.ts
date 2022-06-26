@@ -11,8 +11,6 @@ import * as argon2 from "argon2";
 
 type UserRole = "staff" | "admin" | "superadmin";
 
-import AdminJS from "adminjs";
-
 @Entity()
 export class User extends BaseEntity {
   static validRoles = ["staff", "admin", "superadmin"];
