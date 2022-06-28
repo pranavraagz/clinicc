@@ -9,7 +9,12 @@ export async function getAllPatients(req: Request, res: Response) {
     return res.sendStatus(403);
   }
 
-  const result = await AppDataSource.manager.getRepository(Patient).find();
+  const query = AppDataSource.manager
+    .getRepository(Patient)
+    .createQueryBuilder("patient")
+    .orderBy("patient.id");
+
+  const result = await query.getMany();
 
   res.status(200).json(result);
 }

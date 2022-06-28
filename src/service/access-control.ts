@@ -5,6 +5,8 @@ export const ac = new AccessControl();
 ac.grant("staff")
   .readAny("patient")
   .createAny("patient")
+  .updateAny("patient")
+  .deleteAny("patient")
   .readAny("appointment")
   .createAny("appointment")
   .updateAny("appointment")
