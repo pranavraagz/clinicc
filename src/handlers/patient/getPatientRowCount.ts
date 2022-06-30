@@ -12,7 +12,5 @@ export async function getPatientRowCount(req: Request, res: Response) {
 
   const result = await AppDataSource.manager.getRepository(Patient).count();
 
-  console.log(result);
-
   res.status(200).json(result);
 }

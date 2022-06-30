@@ -8,8 +8,8 @@ export async function getAllPatients(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).read("patient");
 
   const { value, error } = Joi.object({
-    offset: Joi.number().default(0),
-    limit: Joi.number().default(20),
+    offset: Joi.number().default(0).min(0),
+    limit: Joi.number().default(20).max(100),
     name: Joi.string().optional(),
   }).validate(req.query);
 
