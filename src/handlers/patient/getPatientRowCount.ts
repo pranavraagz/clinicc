@@ -3,18 +3,16 @@ import { Patient } from "../../entity/patient";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 
-export async function getAllPatients(req: Request, res: Response) {
+export async function getPatientRowCount(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).read("patient");
+
   if (!permission.granted) {
     return res.sendStatus(403);
   }
 
-  const query = AppDataSource.manager
-    .getRepository(Patient)
-    .createQueryBuilder("patient")
-    .orderBy("patient.id");
+  const result = await AppDataSource.manager.getRepository(Patient).count();
 
-  const result = await query.getMany();
+  console.log(result);
 
   res.status(200).json(result);
 }
