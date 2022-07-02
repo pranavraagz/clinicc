@@ -4,9 +4,8 @@ import { Raw } from "typeorm";
 import { Appointment } from "../../entity/appointment";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
-import { startOfDay, parse } from "date-fns";
 
-export async function getAllAppointments(req: Request, res: Response) {
+export async function getAppointmentsFromToday(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).read("appointment");
   if (!permission.granted) {
     return res.sendStatus(403);
