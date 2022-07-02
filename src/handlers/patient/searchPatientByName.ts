@@ -11,11 +11,11 @@ export async function searchPatientByName(req: Request, res: Response) {
   }
 
   const schema = Joi.object({
-    name: Joi.string().required().min(3),
-    limit: Joi.number(),
+    name: Joi.string(),
+    limit: Joi.number().default(5),
   });
 
-  const { value, error } = schema.validate(req.body);
+  const { value, error } = schema.validate(req.query);
   if (error != null) {
     console.log(error);
     res.status(401).json({ error: error.message });

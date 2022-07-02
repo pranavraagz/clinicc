@@ -14,6 +14,6 @@ patientRouter.post("/", authenticateJWT, createPatient);
 patientRouter.put("/", authenticateJWT, updatePatient);
 patientRouter.get("/", authenticateJWT, getAllPatients);
 patientRouter.get("/count", authenticateJWT, getPatientRowCount);
-patientRouter.post("/search", authenticateJWT, searchPatientByName);
+patientRouter.get("/search", authenticateJWT, searchPatientByName);
 patientRouter.get("/:id", authenticateJWT, getPatient);
 patientRouter.delete("/:id", authenticateJWT, deletePatient);
