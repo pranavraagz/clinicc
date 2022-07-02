@@ -13,10 +13,10 @@ export async function deleteAppointment(req: Request, res: Response) {
     id: Joi.number().required(),
   });
 
-  const { value, error } = schema.validate(req.body);
+  const { value, error } = schema.validate(req.params);
   if (error != null) {
-    console.log(error);
-    res.status(401).json({ error: error.message });
+    console.error(error);
+    return res.status(401).send(error);
   }
 
   const { id } = value;
@@ -29,7 +29,7 @@ export async function deleteAppointment(req: Request, res: Response) {
     return;
   }
 
-  repo.delete({ id: parseInt(id) });
+  await repo.delete({ id: parseInt(id) });
 
   res.sendStatus(200);
 }
