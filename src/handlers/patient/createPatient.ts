@@ -17,10 +17,10 @@ export async function createPatient(req: Request, res: Response) {
     sex: Joi.string().required(),
     height: Joi.number(),
     weight: Joi.number(),
-    address: Joi.string(),
-    altphone: Joi.string(),
-    email: Joi.string().email(),
-    bp: Joi.string(),
+    address: Joi.string().allow(""),
+    altphone: Joi.string().allow(""),
+    email: Joi.string().email().allow(""),
+    bp: Joi.string().allow(""),
   });
 
   const { value, error } = schema.validate(req.body);
