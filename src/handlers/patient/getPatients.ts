@@ -7,6 +7,10 @@ import { AppDataSource } from "../../service/data-source";
 export async function getAllPatients(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).read("patient");
 
+  if (!permission.granted) {
+    return res.sendStatus(403);
+  }
+
   const { value, error } = Joi.object({
     offset: Joi.number().default(0).min(0),
     limit: Joi.number().default(20).max(100),
@@ -19,10 +23,6 @@ export async function getAllPatients(req: Request, res: Response) {
   }
 
   const { offset, limit, name } = value;
-
-  if (!permission.granted) {
-    return res.sendStatus(403);
-  }
 
   const query = AppDataSource.manager
     .getRepository(Patient)
