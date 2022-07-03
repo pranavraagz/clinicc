@@ -8,7 +8,9 @@ import { User } from "../entity/user";
 dotenv.config();
 
 const isSynchronize: boolean = process.env.NODE_ENV != "production";
-console.log("Running in dev mode: synchronizing database...");
+if (isSynchronize) {
+  console.log("Running in dev mode: synchronizing database...");
+}
 
 export const AppDataSource = new DataSource({
   type: "postgres",
