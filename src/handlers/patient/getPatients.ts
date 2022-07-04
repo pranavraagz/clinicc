@@ -27,7 +27,7 @@ export async function getAllPatients(req: Request, res: Response) {
   const query = AppDataSource.manager
     .getRepository(Patient)
     .createQueryBuilder("patient")
-    .orderBy("patient.id");
+    .orderBy("patient.id", "DESC");
 
   // Add text-search to query if query for name
   // was provided in request
