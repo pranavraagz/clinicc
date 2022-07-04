@@ -3,6 +3,7 @@ import Joi from "joi";
 import { Appointment } from "../../entity/appointment";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
+import { logger } from "../../service/logger";
 
 export async function updateAppointment(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).update("appointment");
@@ -17,8 +18,8 @@ export async function updateAppointment(req: Request, res: Response) {
 
   const { value, error } = schema.validate(req.body);
   if (error != null) {
-    console.log(error);
-    res.status(401).json({ error: error.message });
+    logger.warn(error);
+    return res.status(401).json({ error: error.message });
   }
 
   const { start, duration_s, id } = value;
@@ -35,8 +36,7 @@ export async function updateAppointment(req: Request, res: Response) {
     .findOneBy({ id: id });
 
   if (result == null) {
-    res.status(404).json({ msg: "Appointment not found" });
-    return;
+    return res.status(404).json({ msg: "Appointment not found" });
   }
 
   result.startTime = startTime ?? result.startTime;

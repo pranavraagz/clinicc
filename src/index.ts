@@ -4,6 +4,7 @@ const cors = require("cors");
 import fileUpload from "express-fileupload";
 import { apiRouter } from "./routes/api";
 import { AppDataSource } from "./service/data-source";
+import { logger } from "./service/logger";
 
 dotenv.config();
 
@@ -26,6 +27,10 @@ app.use(
 
 app.use("/api/v1", apiRouter);
 
+const dataSourceInitTimer = logger.startTimer();
 AppDataSource.initialize().then(() => {
-  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+  dataSourceInitTimer.done({
+    message: "Data Source Initialized",
+  });
+  app.listen(PORT, () => logger.info(`Listening on port ${PORT}`));
 });

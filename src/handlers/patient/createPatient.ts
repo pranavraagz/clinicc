@@ -3,6 +3,7 @@ import Joi from "joi";
 import { Patient } from "../../entity/patient";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
+import { logger } from "../../service/logger";
 
 export async function createPatient(req: Request, res: Response) {
   const permission = ac.can(req.user?.role).create("patient");
@@ -25,7 +26,7 @@ export async function createPatient(req: Request, res: Response) {
 
   const { value, error } = schema.validate(req.body);
   if (error != null) {
-    console.log(error);
+    logger.warn(error);
     return res.status(401).json({ error: error.message });
   }
 
