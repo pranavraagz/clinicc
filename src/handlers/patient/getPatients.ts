@@ -15,6 +15,7 @@ export async function getAllPatients(req: Request, res: Response) {
     offset: Joi.number().default(0).min(0),
     limit: Joi.number().default(20).max(100),
     name: Joi.string().optional(),
+    phone: Joi.string().optional(),
   }).validate(req.query);
 
   if (error != null) {
@@ -22,17 +23,18 @@ export async function getAllPatients(req: Request, res: Response) {
     return;
   }
 
-  const { offset, limit, name } = value;
+  const { offset, limit, name, phone } = value;
 
   const query = AppDataSource.manager
     .getRepository(Patient)
     .createQueryBuilder("patient")
     .orderBy("patient.id", "DESC");
 
-  // Add text-search to query if query for name
-  // was provided in request
   if (name) {
-    query.where("name ILIKE :searchTerm", { searchTerm: `%${name}%` });
+    query.andWhere("name ILIKE :searchTerm", { searchTerm: `%${name}%` });
+  }
+  if (phone) {
+    query.andWhere("patient.phone = :phone", { phone: phone });
   }
 
   query.offset(offset).limit(limit);
