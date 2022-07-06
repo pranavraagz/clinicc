@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Appointment } from "../../entity/appointment";
@@ -12,7 +13,7 @@ export async function createAppointment(req: Request, res: Response) {
     }
     const schema = Joi.object({
       start: Joi.date().required(),
-      duration_s: Joi.number().required(),
+      end: Joi.date().optional(),
       doctor_id: Joi.number().required(),
       patient_id: Joi.number().required(),
     });
@@ -23,14 +24,22 @@ export async function createAppointment(req: Request, res: Response) {
       return res.status(400).json({ error: error.message });
     }
 
-    const { start, duration_s, doctor_id, patient_id } = value;
+    const { start, end, doctor_id, patient_id } = value;
 
     const appointment = new Appointment();
 
     const startTime = new Date(start);
+    let endTime: Date;
+    if (end != undefined) {
+      endTime = new Date(end);
+    } else {
+      endTime = add(startTime, {
+        minutes: Appointment.APPOINTMENT_DURATION_MINUTES,
+      });
+    }
 
     appointment.startTime = startTime;
-    appointment.duration = duration_s;
+    appointment.endTime = endTime;
     appointment.doctor = doctor_id;
     appointment.patient = patient_id;
 

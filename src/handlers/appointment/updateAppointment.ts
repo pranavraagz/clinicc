@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Appointment } from "../../entity/appointment";
@@ -13,7 +14,7 @@ export async function updateAppointment(req: Request, res: Response) {
   const schema = Joi.object({
     id: Joi.number().required(),
     start: Joi.date().required(),
-    duration_s: Joi.number().required(),
+    end: Joi.date().optional(),
   });
 
   const { value, error } = schema.validate(req.body);
@@ -22,14 +23,22 @@ export async function updateAppointment(req: Request, res: Response) {
     return res.status(401).json({ error: error.message });
   }
 
-  const { start, duration_s, id } = value;
+  const { start, end, id } = value;
 
   const appointment = new Appointment();
 
   const startTime = new Date(start);
+  let endTime: Date;
+  if (end != undefined) {
+    endTime = new Date(end);
+  } else {
+    endTime = add(startTime, {
+      minutes: Appointment.APPOINTMENT_DURATION_MINUTES,
+    });
+  }
 
   appointment.startTime = startTime;
-  appointment.duration = duration_s;
+  appointment.endTime = endTime;
 
   const result = await AppDataSource.manager
     .getRepository(Appointment)
@@ -40,7 +49,7 @@ export async function updateAppointment(req: Request, res: Response) {
   }
 
   result.startTime = startTime ?? result.startTime;
-  result.duration = duration_s ?? result.duration;
+  result.endTime = endTime;
 
   await AppDataSource.manager.save(result);
 

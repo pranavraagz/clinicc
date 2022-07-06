@@ -10,13 +10,13 @@ import { Patient } from "./patient";
 
 @Entity()
 export class Appointment extends BaseEntity {
+  static APPOINTMENT_DURATION_MINUTES = 10;
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: "timestamptz" })
   startTime: Date;
-
-  @Column("integer")
-  duration: number; // in seconds
+  @Column({ type: "timestamptz" })
+  endTime: Date;
 
   // @Column("text", { array: true, default: [] })
   // prescription_images: string[]; // in seconds
