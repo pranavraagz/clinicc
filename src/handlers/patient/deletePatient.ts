@@ -3,6 +3,7 @@ import Joi from "joi";
 import { Patient } from "../../entity/patient";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
+import { logger } from "../../service/logger";
 
 export async function deletePatient(req: Request, res: Response) {
   try {
@@ -39,6 +40,7 @@ export async function deletePatient(req: Request, res: Response) {
       return res.status(400).send("Error while deleting");
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
+    res.status(500).send(error);
   }
 }
