@@ -13,7 +13,7 @@ export async function getAppointments(req: Request, res: Response) {
 
   const { value, error } = Joi.object({
     offset: Joi.number().default(0).min(0),
-    limit: Joi.number().default(20).max(100),
+    limit: Joi.number().default(20).max(500),
     from: Joi.date().required(),
     to: Joi.date().required(),
   }).validate(req.query);
