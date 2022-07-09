@@ -19,6 +19,8 @@ export class Appointment extends BaseEntity {
   endTime: Date;
   @Column({ type: "boolean", default: false })
   isAttended: boolean;
+  @Column({ type: "boolean", default: false })
+  isWalkIn: boolean;
 
   // @Column("text", { array: true, default: [] })
   // prescription_images: string[]; // in seconds
