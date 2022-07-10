@@ -33,7 +33,7 @@ export async function loginUser(req: Request, res: Response) {
     let userRepo = await AppDataSource.getRepository(User);
     var user = await userRepo.findOneBy({ phone: phone });
     if (!user) {
-      res.status(400).send({
+      res.status(401).send({
         msg: "User account does not exist",
       });
       return;
@@ -45,7 +45,7 @@ export async function loginUser(req: Request, res: Response) {
 
   // validate
   if ((await user.validatePassword(password)) === false) {
-    res.status(400).send({
+    res.status(401).send({
       message: "Incorrect password",
     });
     return;
