@@ -28,7 +28,7 @@ export async function createPatient(req: Request, res: Response) {
     const { value, error } = schema.validate(req.body);
     if (error != null) {
       logger.warn(error);
-      return res.status(401).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
 
     const {
