@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
@@ -29,6 +30,7 @@ export class User extends BaseEntity {
   appointments: Appointment[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await argon2.hash(this.password);
   }

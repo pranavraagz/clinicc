@@ -8,7 +8,10 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "dev": "nodemon src/index.ts",
-    "pop-patient": "ts-node src/scripts/addPatient.ts"
+    "pop-patient": "ts-node src/scripts/addPatient.ts",
+    "superadmin": "ts-node src/scripts/createSuperAdmin.ts",
+    "admin": "ts-node src/scripts/createAdmin.ts",
+    "setpassword": "ts-node src/scripts/setPassword.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
