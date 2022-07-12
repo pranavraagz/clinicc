@@ -1,11 +1,13 @@
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Appointment } from "./appointment";
+import { capitalize } from "lodash";
 
 @Entity()
 export class Patient extends BaseEntity {
@@ -35,4 +37,18 @@ export class Patient extends BaseEntity {
 
   @OneToMany(() => Appointment, (appointment) => appointment.patient)
   appointments: Appointment[];
+
+  @BeforeInsert()
+  formatName() {
+    // Trim trailing spaces
+    this.name = this.name.trim();
+
+    // Capitalize first letters
+    this.name = this.name
+      .split(" ")
+      .map((e: string) => {
+        return capitalize(e);
+      })
+      .join(" ");
+  }
 }
