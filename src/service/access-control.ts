@@ -19,4 +19,6 @@ ac.grant("admin")
   .createAny("staff")
   .updateAny("staff");
 
+ac.grant("superadmin").extend("admin");
+
 ac.lock();
