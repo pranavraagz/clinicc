@@ -65,6 +65,7 @@ export async function loginUser(req: Request, res: Response) {
       tokenType: "Bearer",
       expiresAt: addSeconds(Date.now(), expiresInSecs).toISOString(),
       jwt: token,
+      role: user.role,
     });
   } catch (error) {
     logger.error(error);
