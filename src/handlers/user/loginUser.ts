@@ -60,6 +60,7 @@ export async function loginUser(req: Request, res: Response) {
     const expiresAt = Date.now();
 
     res.status(200).send({
+      id: user.id,
       name: user.name,
       phone: user.phone,
       tokenType: "Bearer",

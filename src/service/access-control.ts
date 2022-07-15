@@ -29,6 +29,9 @@ ac.grant("admin")
   .readAny("staff")
   .updateAny("staff")
   .deleteAny("staff")
+  .create("user")
+  .readAny("user")
+  .update("user")
   .readOwn("admin")
   .updateOwn("admin");
 
