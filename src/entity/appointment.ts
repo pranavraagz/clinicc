@@ -21,6 +21,12 @@ export class Appointment extends BaseEntity {
   isAttended: boolean;
   @Column({ type: "boolean", default: false })
   isWalkIn: boolean;
+  @Column("float4", { nullable: true })
+  height: number;
+  @Column("float4", { nullable: true })
+  weight: number;
+  @Column("varchar", { nullable: true })
+  bp: string;
 
   // @Column("text", { array: true, default: [] })
   // prescription_images: string[]; // in seconds

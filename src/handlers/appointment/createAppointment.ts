@@ -22,13 +22,17 @@ export async function createAppointment(req: Request, res: Response) {
       end: Joi.date().optional(),
       doctor_id: Joi.number().required(),
       patient_id: Joi.number().required(),
+      height: Joi.number().optional(),
+      weight: Joi.number().optional(),
+      bp: Joi.number().allow("").optional(),
     });
     const { value, error } = schema.validate(req.body);
     if (error != null) {
       console.error(error);
       return res.status(400).json({ error: error.message });
     }
-    const { isWalkIn, start, end, doctor_id, patient_id } = value;
+    const { isWalkIn, start, end, doctor_id, patient_id, height, weight, bp } =
+      value;
 
     // If walkin appointment, just create it at end of day
     if (isWalkIn) {
@@ -40,6 +44,9 @@ export async function createAppointment(req: Request, res: Response) {
       appointment.endTime = time;
       appointment.doctor = doctor_id;
       appointment.patient = patient_id;
+      appointment.height = height;
+      appointment.weight = weight;
+      appointment.bp = bp;
 
       await AppDataSource.manager.save(appointment);
       return res.sendStatus(201);

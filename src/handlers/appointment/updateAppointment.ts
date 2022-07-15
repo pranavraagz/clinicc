@@ -18,24 +18,16 @@ export async function updateAppointment(req: Request, res: Response) {
     // Input validation
     const schema = Joi.object({
       id: Joi.number().required(),
-      start: Joi.date().required(),
-      end: Joi.date().optional(),
+      height: Joi.number().optional(),
+      weight: Joi.number().optional(),
+      bp: Joi.string().allow("").optional(),
     });
     const { value, error } = schema.validate(req.body);
     if (error != null) {
       logger.warn(error);
-      return res.status(401).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
-    const { start, end, id } = value;
-    const inputStartTime = new Date(start);
-    let inputEndTime: Date;
-    if (end != undefined) {
-      inputEndTime = new Date(end);
-    } else {
-      inputEndTime = add(inputStartTime, {
-        minutes: Appointment.APPOINTMENT_DURATION_MINUTES,
-      });
-    }
+    const { id, height, weight, bp } = value;
 
     // Find existing appointment
     const appointmentToUpdate = await AppDataSource.manager
@@ -46,35 +38,15 @@ export async function updateAppointment(req: Request, res: Response) {
       return res.status(404).send("Appointment not found");
     }
 
-    // Checking for overlaps upon update:
-    const existingOverlap = await AppDataSource.getRepository(
-      Appointment
-    ).findOne({
-      where: [
-        {
-          startTime: LessThanOrEqual(inputStartTime),
-          endTime: MoreThanOrEqual(inputEndTime),
-        },
-        {
-          endTime: MoreThan(inputStartTime),
-          startTime: LessThan(inputStartTime),
-        },
-        { startTime: LessThan(inputEndTime), endTime: MoreThan(inputEndTime) },
-        {},
-      ],
-    });
-    if (existingOverlap) {
-      return res.status(400).send("Appointment already exists in time period.");
-    }
-
-    appointmentToUpdate.startTime =
-      inputStartTime ?? appointmentToUpdate.startTime;
-    appointmentToUpdate.endTime = inputEndTime;
+    appointmentToUpdate.height = height;
+    appointmentToUpdate.weight = weight;
+    appointmentToUpdate.bp = bp;
 
     await AppDataSource.manager.save(appointmentToUpdate);
 
     res.sendStatus(200);
   } catch (error) {
+    logger.error(error);
     return res.status(500).send(error);
   }
 }

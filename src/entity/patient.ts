@@ -26,12 +26,6 @@ export class Patient extends BaseEntity {
   altphone: string;
   @Column("varchar", { nullable: true })
   email: string;
-  @Column("float4", { nullable: true })
-  height: number;
-  @Column("float4", { nullable: true })
-  weight: number;
-  @Column("varchar", { nullable: true })
-  bp: string;
   @Column("varchar", { nullable: true })
   address: string;
 

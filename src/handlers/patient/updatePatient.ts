@@ -18,12 +18,9 @@ export async function updatePatient(req: Request, res: Response) {
       date_of_birth: Joi.date(),
       phone: Joi.string(),
       sex: Joi.string(),
-      height: Joi.number(),
-      weight: Joi.number(),
       address: Joi.string().allow(""),
       altphone: Joi.string().allow(""),
       email: Joi.string().email().allow(""),
-      bp: Joi.string().allow(""),
     });
 
     const { value, error } = schema.validate(req.body);
@@ -32,19 +29,8 @@ export async function updatePatient(req: Request, res: Response) {
       return res.status(400).json({ error: error.message });
     }
 
-    const {
-      id,
-      name,
-      date_of_birth,
-      phone,
-      sex,
-      height,
-      weight,
-      address,
-      altphone,
-      email,
-      bp,
-    } = value;
+    const { id, name, date_of_birth, phone, sex, address, altphone, email } =
+      value;
 
     const patient = await AppDataSource.manager
       .getRepository(Patient)
@@ -58,11 +44,8 @@ export async function updatePatient(req: Request, res: Response) {
     patient.dob = date_of_birth ?? patient.dob;
     patient.phone = phone ?? patient.phone;
     patient.sex = sex ?? patient.sex;
-    patient.height = height ?? patient.height;
-    patient.weight = weight ?? patient.weight;
     patient.address = address ?? patient.address;
     patient.altphone = altphone ?? patient.altphone;
-    patient.bp = bp ?? patient.bp;
     patient.email = email ?? patient.email;
 
     await AppDataSource.manager.save(patient);
