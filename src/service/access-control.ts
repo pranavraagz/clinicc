@@ -22,7 +22,7 @@ ac.grant("doctor")
   .updateAny("appointment-attend");
 
 ac.grant("admin")
-  .extend("staff")
+  .extend("doctor")
   .updateAny("patient")
   .deleteAny("patient")
   .createAny("staff")
