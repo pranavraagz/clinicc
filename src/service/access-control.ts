@@ -3,22 +3,33 @@ import { AccessControl } from "accesscontrol";
 export const ac = new AccessControl();
 
 ac.grant("staff")
-  .readAny("patient")
   .createAny("patient")
+  .readAny("patient")
   .updateAny("patient")
   .deleteAny("patient")
-  .readAny("appointment")
   .createAny("appointment")
+  .readAny("appointment")
   .updateAny("appointment")
-  .deleteAny("appointment");
+  .deleteAny("appointment")
+  .readOwn("staff")
+  .updateOwn("staff");
+
+ac.grant("doctor")
+  .extend("staff")
+  .readOwn("doctor")
+  .updateOwn("doctor")
+  .readAny("appointment-attend")
+  .updateAny("appointment-attend");
 
 ac.grant("admin")
   .extend("staff")
   .updateAny("patient")
   .deleteAny("patient")
   .createAny("staff")
-  .updateAny("staff");
-
-ac.grant("superadmin").extend("admin");
+  .readAny("staff")
+  .updateAny("staff")
+  .deleteAny("staff")
+  .readOwn("admin")
+  .updateOwn("admin");
 
 ac.lock();

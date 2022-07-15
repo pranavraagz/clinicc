@@ -6,10 +6,12 @@ import { getAppointments } from "../handlers/appointment/getAppointments";
 import { getAppointmentRowCount } from "../handlers/appointment/getAppointmentRowCount";
 import { updateAppointment } from "../handlers/appointment/updateAppointment";
 import { authenticateJWT } from "../middleware/auth";
+import { attendAppointment } from "../handlers/appointment/attendAppointment";
 
 export const appointmentRouter = Router();
 
 appointmentRouter.get("/", authenticateJWT, getAppointments);
+appointmentRouter.get("/attend", authenticateJWT, attendAppointment);
 appointmentRouter.get("/count", authenticateJWT, getAppointmentRowCount);
 appointmentRouter.post("/", authenticateJWT, createAppointment);
 appointmentRouter.put("/", authenticateJWT, updateAppointment);
