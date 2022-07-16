@@ -18,16 +18,25 @@ export async function getAppointments(req: Request, res: Response) {
       limit: Joi.number().default(20).max(500),
       from: Joi.date().required(),
       to: Joi.date().required(),
+      doctor_id: Joi.number().optional(),
     }).validate(req.query);
 
     if (error != null) {
       return res.status(400).json({ error: error.message });
     }
 
-    const { offset, limit, from, to } = value;
+    const { offset, limit, from, to, doctor_id } = value;
 
     const fromTime = new Date(from);
     const toTime = new Date(to);
+
+    let whereClause: any = {
+      startTime: Between(fromTime, toTime),
+    };
+    // Helps find appointments pertaining to a doctor
+    if (doctor_id) {
+      whereClause.doctor = { id: doctor_id };
+    }
 
     const result = await AppDataSource.manager.getRepository(Appointment).find({
       relations: {
@@ -46,9 +55,7 @@ export async function getAppointments(req: Request, res: Response) {
           id: true,
         },
       },
-      where: {
-        startTime: Between(fromTime, toTime),
-      },
+      where: whereClause,
       order: {
         startTime: "ASC",
       },
