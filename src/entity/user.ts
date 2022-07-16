@@ -5,10 +5,12 @@ import {
   Column,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Appointment } from "./appointment";
 import * as argon2 from "argon2";
+import { Doctor } from "./doctor";
 
 type UserRole = "staff" | "doctor" | "admin";
 
@@ -28,6 +30,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
+
+  @OneToOne(() => Doctor, (doctor) => doctor.user)
+  doctor: Doctor;
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -93,6 +93,7 @@ export async function createAppointment(req: Request, res: Response) {
 
     res.sendStatus(201);
   } catch (error) {
+    logger.error(error);
     res.status(500).send(error);
   }
 }

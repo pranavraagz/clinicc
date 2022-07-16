@@ -15,20 +15,19 @@ export async function getDoctor(req: Request, res: Response) {
       id: Joi.number().required(),
     }).validate(req.params);
 
-    if (error != null) {
-      res.status(401).json({ error: error.message });
-      return;
+    if (error) {
+      return res.status(400).send(error.message);
     }
     const { id } = value;
 
-    const patient = await AppDataSource.manager
+    const doctor = await AppDataSource.manager
       .getRepository(Doctor)
       .findOneBy({ id: parseInt(id) });
 
-    if (patient) {
-      res.status(200).json(patient);
+    if (doctor) {
+      res.status(200).send(doctor);
     } else {
-      res.sendStatus(404);
+      res.status(400).send("Doctor not found");
     }
   } catch (error) {
     logger.error(error);

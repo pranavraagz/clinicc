@@ -32,6 +32,9 @@ ac.grant("admin")
   .create("user")
   .readAny("user")
   .update("user")
+  .create("doctor")
+  .readAny("doctor")
+  .update("doctor")
   .readOwn("admin")
   .updateOwn("admin");
 

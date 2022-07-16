@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { Doctor } from "../../entity/doctor";
+import { User } from "../../entity/user";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 import { logger } from "../../service/logger";
@@ -12,25 +13,41 @@ export async function createDoctor(req: Request, res: Response) {
       return res.sendStatus(403);
     }
     const schema = Joi.object({
-      name: Joi.string().required(),
-      phone: Joi.string().required(),
+      user_id: Joi.number().required(),
+      name: Joi.string().optional(),
+      phone: Joi.string().optional(),
     });
 
     const { value, error } = schema.validate(req.body);
-    if (error != null) {
+    if (error) {
       logger.warn(error);
-      return res.status(401).json({ error: error.message });
+      return res.status(400).send(error.message);
     }
 
-    const { name, phone } = value;
+    const { user_id, name, phone } = value;
+
+    const user = await AppDataSource.getRepository(User).findOneBy({
+      id: user_id,
+    });
+
+    if (user == null) {
+      return res.status(400).send("User not found");
+    }
+    if (user.role !== "doctor") {
+      return res
+        .status(400)
+        .send(
+          "User does have have doctor role and therefore cannot be used to create a doctor"
+        );
+    }
 
     const doctor = new Doctor();
 
-    doctor.name = name;
-    doctor.phone = phone;
+    doctor.name = name ?? user.name;
+    doctor.phone = phone ?? user.phone;
+    doctor.user = user;
 
-    await AppDataSource.manager.save(doctor);
-
+    await AppDataSource.getRepository(Doctor).save(doctor);
     res.sendStatus(201);
   } catch (error) {
     logger.error(error);
