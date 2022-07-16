@@ -22,7 +22,10 @@ export class Doctor extends BaseEntity {
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
 
-  @OneToOne(() => User, (user) => user.doctor, { nullable: false })
+  @OneToOne(() => User, (user) => user.doctor, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   user: User;
 }
