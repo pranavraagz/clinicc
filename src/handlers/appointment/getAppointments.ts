@@ -39,14 +39,14 @@ export async function getAppointments(req: Request, res: Response) {
     }
 
     const result = await AppDataSource.manager.getRepository(Appointment).find({
-      relations: {
-        patient: true,
-        doctor: true,
-      },
+      relations: ["patient", "doctor", "doctor.user"],
       select: {
         doctor: {
           id: true,
-          name: true,
+          user: {
+            name: true,
+            phone: true,
+          },
         },
         patient: {
           name: true,

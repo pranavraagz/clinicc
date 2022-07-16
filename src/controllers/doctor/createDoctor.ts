@@ -2,10 +2,7 @@ import { Doctor } from "../../entity/doctor";
 import { User } from "../../entity/user";
 import { AppDataSource } from "../../service/data-source";
 
-export async function createDoctor(
-  userId: number,
-  options?: { name?: string; phone?: string }
-) {
+export async function createDoctor(userId: number) {
   try {
     const user = await AppDataSource.getRepository(User).findOne({
       where: { id: userId },
@@ -28,8 +25,6 @@ export async function createDoctor(
 
     const doctor = new Doctor();
 
-    doctor.name = options?.name ?? user.name;
-    doctor.phone = options?.phone ?? user.phone;
     doctor.user = user;
 
     await AppDataSource.getRepository(Doctor).save(doctor);

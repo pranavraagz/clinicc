@@ -14,8 +14,6 @@ export async function createDoctor(req: Request, res: Response) {
     }
     const schema = Joi.object({
       user_id: Joi.number().required(),
-      name: Joi.string().optional(),
-      phone: Joi.string().optional(),
     });
 
     const { value, error } = schema.validate(req.body);
@@ -24,7 +22,7 @@ export async function createDoctor(req: Request, res: Response) {
       return res.status(400).send(error.message);
     }
 
-    const { user_id, name, phone } = value;
+    const { user_id } = value;
 
     const user = await AppDataSource.getRepository(User).findOne({
       where: { id: user_id },
@@ -51,8 +49,6 @@ export async function createDoctor(req: Request, res: Response) {
 
     const doctor = new Doctor();
 
-    doctor.name = name ?? user.name;
-    doctor.phone = phone ?? user.phone;
     doctor.user = user;
 
     await AppDataSource.getRepository(Doctor).save(doctor);
