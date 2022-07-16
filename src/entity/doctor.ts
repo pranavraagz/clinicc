@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -21,8 +22,7 @@ export class Doctor extends BaseEntity {
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
 
-  @OneToOne(() => User, (user) => user.doctor, {
-    cascade: true,
-  })
+  @OneToOne(() => User, (user) => user.doctor, { nullable: false })
+  @JoinColumn()
   user: User;
 }

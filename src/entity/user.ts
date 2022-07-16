@@ -31,7 +31,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
 
-  @OneToOne(() => Doctor, (doctor) => doctor.user)
+  @OneToOne(() => Doctor, (doctor) => doctor.user, { nullable: true })
   doctor: Doctor;
 
   @BeforeInsert()

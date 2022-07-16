@@ -26,12 +26,20 @@ export async function createDoctor(req: Request, res: Response) {
 
     const { user_id, name, phone } = value;
 
-    const user = await AppDataSource.getRepository(User).findOneBy({
-      id: user_id,
+    const user = await AppDataSource.getRepository(User).findOne({
+      where: { id: user_id },
+      relations: { doctor: true },
     });
+
+    console.log(user);
 
     if (user == null) {
       return res.status(400).send("User not found");
+    }
+    if (user.doctor) {
+      return res
+        .status(400)
+        .send("This user is already linked to a doctor account");
     }
     if (user.role !== "doctor") {
       return res

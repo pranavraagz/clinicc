@@ -6,4 +6,4 @@ import { authenticateJWT } from "../middleware/auth";
 export const doctorRouter = Router();
 
 doctorRouter.post("/", authenticateJWT, createDoctor);
-doctorRouter.get("/:id", authenticateJWT, getDoctor);
+doctorRouter.get("/", authenticateJWT, getDoctor);

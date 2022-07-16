@@ -16,7 +16,7 @@ ac.grant("staff")
 
 ac.grant("doctor")
   .extend("staff")
-  .readOwn("doctor")
+  .read("doctor")
   .updateOwn("doctor")
   .readAny("appointment-attend")
   .updateAny("appointment-attend");
