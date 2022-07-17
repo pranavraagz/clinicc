@@ -13,9 +13,31 @@ export async function getDefaultDoctor(req: Request, res: Response) {
       return res.sendStatus(403);
     }
 
-    const doctor = await AppDataSource.manager
-      .getRepository(Doctor)
-      .findOneBy({ id: DEFAULT_DOCTOR_ID });
+    const doctors = await AppDataSource.manager.getRepository(Doctor).find({
+      relations: ["user"],
+      select: {
+        user: {
+          name: true,
+          id: true,
+        },
+        id: true,
+        availability: {
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: true,
+          sunday: true,
+        },
+      },
+      order: {
+        id: "ASC",
+      },
+    });
+
+    let doctor;
+    if (doctors.length > 0) doctor = doctors[0];
 
     if (doctor) {
       res.status(200).send(doctor);
