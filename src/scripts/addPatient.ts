@@ -9,11 +9,8 @@ const addPatient = async () => {
   patient.dob = faker.date.birthdate();
   patient.phone = faker.phone.number("9#########");
   patient.sex = faker.name.gender(true);
-  patient.height = faker.datatype.number({ min: 120, max: 200 });
-  patient.weight = faker.datatype.number({ min: 40, max: 120 });
   patient.address = faker.address.streetAddress();
   patient.altphone = faker.phone.number("9#########");
-  patient.bp = faker.datatype.string(4);
   patient.email = faker.internet.email();
 
   return await AppDataSource.manager.save(patient);
