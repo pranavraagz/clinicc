@@ -27,7 +27,7 @@ export async function getPatient(req: Request, res: Response) {
       .findOneBy({ id: parseInt(id) });
 
     if (patient != null) {
-      res.status(200).json(patient);
+      res.status(200).send(patient);
     } else {
       res.sendStatus(404);
     }

@@ -31,7 +31,7 @@ export class Doctor extends BaseEntity {
   id: number;
 
   @Column({ type: "json", nullable: true, default: {} })
-  availability: string;
+  availability: Availability;
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
@@ -42,24 +42,4 @@ export class Doctor extends BaseEntity {
   })
   @JoinColumn()
   user: User;
-
-  setAvailability(avail: Availability) {
-    this.availability = JSON.stringify(avail);
-  }
-
-  getAvailability(): Availability {
-    return JSON.parse(this.availability);
-  }
 }
-
-const s = new Doctor();
-
-s.setAvailability({
-  monday: [{ start: 0, end: 60 }],
-  tuesday: [{ start: 0, end: 60 }],
-  wednesday: [{ start: 0, end: 60 }],
-  thursday: [{ start: 0, end: 60 }],
-  friday: [{ start: 0, end: 60 }],
-  saturday: [{ start: 0, end: 60 }],
-  sunday: [{ start: 0, end: 60 }],
-});

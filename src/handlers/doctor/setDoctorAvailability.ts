@@ -49,7 +49,7 @@ export async function setDoctorAvailability(req: Request, res: Response) {
         .status(403)
         .send("Only the doctor can change their own availability");
 
-    doctor.setAvailability(availability);
+    doctor.availability = availability;
 
     await doctor.save();
     return res.status(200).send("Success");

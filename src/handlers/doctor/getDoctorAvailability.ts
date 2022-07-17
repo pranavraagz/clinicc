@@ -26,17 +26,7 @@ export async function getDoctorAvailability(req: Request, res: Response) {
 
     if (!doctor) return res.status(400).send("Doctor not found");
 
-    let availability;
-    try {
-      availability = doctor.getAvailability();
-    } catch (error) {
-      return res
-        .status(400)
-        .send(
-          "Error fetching availability, ensure doctor has set availability"
-        );
-    }
-    return res.status(200).send(availability);
+    return res.status(200).send(doctor.availability);
   } catch (error) {
     logger.error(error);
     res.status(500).send(error);
