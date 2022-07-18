@@ -32,7 +32,7 @@ export async function getUsers(req: Request, res: Response) {
       .orderBy("user.id", "ASC");
 
     if (name) {
-      query.andWhere("name ILIKE :searchTerm", { searchTerm: `%${name}%` });
+      query.andWhere("name LIKE :searchTerm", { searchTerm: `%${name}%` });
     }
     if (phone) {
       query.andWhere("user.phone = :phone", { phone: phone });

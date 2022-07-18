@@ -13,17 +13,17 @@ export class Appointment extends BaseEntity {
   static APPOINTMENT_DURATION_MINUTES = 10;
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: "timestamptz" })
+  @Column({ type: "datetime" })
   startTime: Date;
-  @Column({ type: "timestamptz" })
+  @Column({ type: "datetime" })
   endTime: Date;
   @Column({ type: "boolean", default: false })
   isAttended: boolean;
   @Column({ type: "boolean", default: false })
   isWalkIn: boolean;
-  @Column("float4", { nullable: true })
+  @Column("float", { nullable: true })
   height: number;
-  @Column("float4", { nullable: true })
+  @Column("float", { nullable: true })
   weight: number;
   @Column("varchar", { nullable: true })
   bp: string;

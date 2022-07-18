@@ -30,7 +30,7 @@ export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "json", nullable: true, default: {} })
+  @Column({ type: "simple-json", nullable: true })
   availability: Availability;
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)

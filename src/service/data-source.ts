@@ -13,14 +13,21 @@ if (isSynchronize) {
   logger.info("Running in dev mode: synchronizing database...");
 }
 
+// export const AppDataSource = new DataSource({
+//   type: "postgres",
+//   host: process.env.DB_HOST,
+//   port: Number(process.env.DB_PORT) || 5432,
+//   username: process.env.DB_USERNAME,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
+//   entities: [User, Patient, Doctor, Appointment],
+//   synchronize: isSynchronize,
+//   logging: false,
+// });
+
 export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT) || 5432,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  type: "better-sqlite3",
+  database: "database/" + (process.env.DB_NAME ?? "clinic"),
   entities: [User, Patient, Doctor, Appointment],
   synchronize: isSynchronize,
-  logging: false,
 });

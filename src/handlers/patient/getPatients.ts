@@ -33,7 +33,7 @@ export async function getAllPatients(req: Request, res: Response) {
       .orderBy("patient.id", "DESC");
 
     if (name) {
-      query.andWhere("name ILIKE :searchTerm", { searchTerm: `%${name}%` });
+      query.andWhere("name LIKE :searchTerm", { searchTerm: `%${name}%` });
     }
     if (phone) {
       query.andWhere("patient.phone = :phone", { phone: phone });

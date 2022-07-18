@@ -28,7 +28,7 @@ export async function searchPatientByName(req: Request, res: Response) {
     const result = await AppDataSource.manager
       .createQueryBuilder(Patient, "patient")
       .select(["patient.name", "patient.id"])
-      .where("name ILIKE :searchTerm", { searchTerm: `%${name}%` })
+      .where("name LIKE :searchTerm", { searchTerm: `%${name}%` })
       .limit(limit ?? 10)
       .getMany();
     res.status(200).send(result);
