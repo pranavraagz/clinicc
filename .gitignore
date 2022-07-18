@@ -102,4 +102,5 @@ tests/cases/user/prettier/prettier
 .*
 prescriptions
 database/
+backups/
 *.log
