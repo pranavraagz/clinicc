@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import fs from "fs";
 import * as path from "path";
 import * as brotli from "brotli";
+import { format } from "date-fns";
 
 dotenv.config();
 
@@ -18,7 +19,9 @@ export const backup = async (
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir);
   }
-  const dest = destination ?? `${destDir}/backup-${Date.now()}.db`;
+  const dest =
+    destination ??
+    `${destDir}/backup-${format(Date.now(), "yyyy-MM-dd-HH'h'-mm'm'")}.db`;
 
   const db = new Database(src);
   await db.backup(dest);
