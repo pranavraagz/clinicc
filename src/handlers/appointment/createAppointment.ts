@@ -17,7 +17,10 @@ export async function createAppointment(req: Request, res: Response) {
 
     // Input validation
     const schema = Joi.object({
-      start: Joi.date().required(),
+      start: Joi.alternatives().conditional("isWalkIn", {
+        then: Joi.date().optional(),
+        otherwise: Joi.date().required(),
+      }),
       isWalkIn: Joi.bool().optional(),
       end: Joi.date().optional(),
       doctor_id: Joi.number().required(),
@@ -36,7 +39,7 @@ export async function createAppointment(req: Request, res: Response) {
 
     // If walkin appointment, just create it at end of day
     if (isWalkIn) {
-      const time = endOfDay(new Date(start));
+      const time = endOfDay(Date.now());
       // Creation of new appointment
       const appointment = new Appointment();
       appointment.isWalkIn = true;
