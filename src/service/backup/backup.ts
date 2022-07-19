@@ -1,37 +1,66 @@
-import { AppDataSource } from "../data-source";
 import Database from "better-sqlite3";
 import * as dotenv from "dotenv";
 import fs from "fs";
-import { logger } from "../logger";
+import * as path from "path";
+import * as brotli from "brotli";
 
 dotenv.config();
 
-export const backup = async () => {
-  const filename = process.env.DB_NAME ?? "clinic";
-  const sourceAddr = `database/${filename}.db`;
-  const destDir = "backups";
-  const destAddr = `${destDir}/backup-${Date.now()}.db`;
-
-  let db;
-  try {
-    db = new Database(sourceAddr);
-  } catch (error) {
-    logger.error(error);
-    return;
-  }
-
-  // Check if destination directory exists
+/**
+ *
+ * @return path to newly created backup file
+ */
+export const backup = async (
+  src: string,
+  destination?: string
+): Promise<string> => {
+  let destDir = destination ? path.dirname(destination) : "backups";
   if (!fs.existsSync(destDir)) {
-    // If not, create it
     fs.mkdirSync(destDir);
   }
+  const dest = destination ?? `${destDir}/backup-${Date.now()}.db`;
 
-  try {
-    await db.backup(destAddr);
-    logger.info("Database backup successful");
-  } catch (error) {
-    logger.error("Database backup failed", error);
-  }
+  const db = new Database(src);
+  await db.backup(dest);
+  db.close();
+  return dest;
 };
 
-backup();
+export const compressFile = (src: string, destination?: string): string => {
+  if (!fs.existsSync(src)) {
+    throw new Error("Provided file does not exist");
+  }
+  if (destination) {
+    // Ensure destination directory exists
+    const destDir = path.dirname(destination);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir);
+    }
+  }
+  const file = fs.readFileSync(src);
+  const result = brotli.compress(file);
+  const dest =
+    destination ??
+    path.dirname(src) + "/" + path.basename(src, path.extname(src)) + ".br";
+  fs.writeFileSync(dest, result);
+  return dest;
+};
+
+export const decompressFile = (src: string, destination?: string): string => {
+  if (!fs.existsSync(src)) {
+    throw new Error("Provided file does not exist");
+  }
+  if (destination) {
+    // Ensure destination directory exists
+    const destDir = path.dirname(destination);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir);
+    }
+  }
+  const result = brotli.decompress(fs.readFileSync(src));
+  const dest =
+    destination ??
+    path.dirname(src) + "/" + path.basename(src, path.extname(src)) + ".br";
+  fs.writeFileSync(dest, result);
+  return dest;
+};

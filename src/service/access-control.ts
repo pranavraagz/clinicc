@@ -38,6 +38,7 @@ ac.grant("admin")
   .readAny("doctor")
   .update("doctor")
   .readOwn("admin")
-  .updateOwn("admin");
+  .updateOwn("admin")
+  .read("backup");
 
 ac.lock();

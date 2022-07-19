@@ -34,6 +34,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
+    exposedHeaders: "Content-Disposition", // Required to download backup
   })
 );
 
