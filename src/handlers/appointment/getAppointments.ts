@@ -19,13 +19,14 @@ export async function getAppointments(req: Request, res: Response) {
       from: Joi.date().required(),
       to: Joi.date().required(),
       doctor_id: Joi.number().optional(),
+      is_paid_only: Joi.bool().optional(),
     }).validate(req.query);
 
     if (error != null) {
       return res.status(400).json({ error: error.message });
     }
 
-    const { offset, limit, from, to, doctor_id } = value;
+    const { offset, limit, from, to, doctor_id, is_paid_only } = value;
 
     const fromTime = new Date(from);
     const toTime = new Date(to);
@@ -36,6 +37,11 @@ export async function getAppointments(req: Request, res: Response) {
     // Helps find appointments pertaining to a doctor
     if (doctor_id) {
       whereClause.doctor = { id: doctor_id };
+    }
+
+    // Helps find appointments that are paid for
+    if (is_paid_only !== null) {
+      whereClause = { ...whereClause, isPaid: is_paid_only };
     }
 
     const result = await AppDataSource.manager.getRepository(Appointment).find({
