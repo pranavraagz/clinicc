@@ -21,26 +21,27 @@ export async function updateAppointment(req: Request, res: Response) {
       height: Joi.number().optional(),
       weight: Joi.number().optional(),
       bp: Joi.string().allow("").optional(),
+      isPaid: Joi.bool().optional().valid(true), // Only allow it to be set to true.
+      isAttended: Joi.bool().optional(),
     });
     const { value, error } = schema.validate(req.body);
-    if (error != null) {
-      logger.warn(error);
-      return res.status(400).json({ error: error.message });
-    }
-    const { id, height, weight, bp } = value;
+    if (error) return res.status(400).send(error);
+
+    const { id, height, weight, bp, isPaid, isAttended } = value;
 
     // Find existing appointment
     const appointmentToUpdate = await AppDataSource.manager
       .getRepository(Appointment)
       .findOneBy({ id: id });
 
-    if (appointmentToUpdate == null) {
+    if (appointmentToUpdate == null)
       return res.status(404).send("Appointment not found");
-    }
 
-    appointmentToUpdate.height = height;
-    appointmentToUpdate.weight = weight;
-    appointmentToUpdate.bp = bp;
+    if (height) appointmentToUpdate.height = height;
+    if (weight) appointmentToUpdate.weight = weight;
+    if (bp) appointmentToUpdate.bp = bp;
+    if (isPaid !== null) appointmentToUpdate.isPaid = true; // Can only be set to true, cannot be set to false
+    if (isAttended !== null) appointmentToUpdate.isAttended = isAttended;
 
     await AppDataSource.manager.save(appointmentToUpdate);
 

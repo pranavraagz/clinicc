@@ -20,6 +20,8 @@ export class Appointment extends BaseEntity {
   @Column({ type: "boolean", default: false })
   isAttended: boolean;
   @Column({ type: "boolean", default: false })
+  isPaid: boolean;
+  @Column({ type: "boolean", default: false })
   isWalkIn: boolean;
   @Column("float", { nullable: true })
   height: number;
