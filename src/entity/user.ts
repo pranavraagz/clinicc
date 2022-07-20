@@ -40,7 +40,8 @@ export class User extends BaseEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    this.password = await argon2.hash(this.password);
+    if (this.password.startsWith("$argon") == false)
+      this.password = await argon2.hash(this.password);
   }
 
   async validatePassword(password: string) {

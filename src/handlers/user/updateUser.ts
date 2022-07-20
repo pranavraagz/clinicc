@@ -24,9 +24,7 @@ export async function updateUser(req: Request, res: Response) {
         .optional(),
     });
     const { value, error } = schema.validate(req.body);
-    if (error) {
-      return res.status(400).send(error.message);
-    }
+    if (error) return res.status(400).send(error.message);
     const { id, name, phone, password, role } = value;
 
     // Ensure the ID corresponds to existing user
@@ -48,12 +46,10 @@ export async function updateUser(req: Request, res: Response) {
       }
     }
 
-    user.name = name ?? user.name;
-    user.phone = phone ?? user.phone;
-    user.role = role ?? user.role;
-    if (password) {
-      user.password = password;
-    }
+    if (name) user.name = name;
+    if (phone) user.phone = phone;
+    if (role) user.role = role;
+    if (password) user.password = password;
 
     await user.save();
 
