@@ -34,6 +34,9 @@ export class User extends BaseEntity {
   @OneToOne(() => Doctor, (doctor) => doctor.user, { nullable: true })
   doctor: Doctor;
 
+  @OneToMany(() => Appointment, (appointment) => appointment.paidTo)
+  gotPaymentFor: Appointment[];
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

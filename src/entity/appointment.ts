@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { Doctor } from "./doctor";
 import { Patient } from "./patient";
+import { User } from "./user";
 
 @Entity()
 export class Appointment extends BaseEntity {
@@ -42,4 +43,9 @@ export class Appointment extends BaseEntity {
     onDelete: "SET NULL",
   })
   patient: Patient;
+
+  @ManyToOne(() => User, (user) => user.gotPaymentFor, {
+    onDelete: "SET NULL",
+  })
+  paidTo: User;
 }

@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import Joi from "joi";
 import { LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqual } from "typeorm";
 import { Appointment } from "../../entity/appointment";
+import { User } from "../../entity/user";
 import { ac } from "../../service/access-control";
 import { AppDataSource } from "../../service/data-source";
 import { logger } from "../../service/logger";
@@ -40,7 +41,15 @@ export async function updateAppointment(req: Request, res: Response) {
     if (height) appointmentToUpdate.height = height;
     if (weight) appointmentToUpdate.weight = weight;
     if (bp) appointmentToUpdate.bp = bp;
-    if (isPaid !== null) appointmentToUpdate.isPaid = true; // Can only be set to true, cannot be set to false
+    if (isPaid !== null) {
+      const user = await AppDataSource.manager
+        .getRepository(User)
+        .findOneBy({ id: parseInt(req.user!.id) });
+      if (user) {
+        appointmentToUpdate.isPaid = true;
+        appointmentToUpdate.paidTo = user;
+      }
+    } // Can only be set to true, cannot be set to false
     if (isAttended !== null) appointmentToUpdate.isAttended = isAttended;
 
     await AppDataSource.manager.save(appointmentToUpdate);
