@@ -38,7 +38,10 @@ export async function getUsers(req: Request, res: Response) {
       query.andWhere("user.phone = :phone", { phone: phone });
     }
 
-    query.offset(offset).limit(limit);
+    query
+      .offset(offset)
+      .limit(limit)
+      .select(["user.id", "user.name", "user.phone", "user.role"]);
 
     const result = await query.getMany();
 
