@@ -30,10 +30,7 @@ export async function createAppointment(req: Request, res: Response) {
       bp: Joi.number().allow("").optional(),
     });
     const { value, error } = schema.validate(req.body);
-    if (error != null) {
-      console.error(error);
-      return res.status(400).json({ error: error.message });
-    }
+    if (error) return res.status(400).send(error.message);
     const { isWalkIn, start, end, doctor_id, patient_id, height, weight, bp } =
       value;
 

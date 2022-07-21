@@ -11,53 +11,38 @@ export async function loginUser(req: Request, res: Response) {
     // ensuring jwt secret is defined
     let secret: string;
     let expiresInSecs: number;
-    try {
-      secret = process.env.JWT_SECRET ?? "secret";
-      expiresInSecs = parseInt(process.env.JWT_EXPIRES_IN_SECS ?? "2592000");
-    } catch (error) {
-      res.status(500).send(error);
-      return;
-    }
+
+    secret = process.env.JWT_SECRET ?? "secret";
+    expiresInSecs = parseInt(process.env.JWT_EXPIRES_IN_SECS ?? "2592000");
 
     // request validation
     const { value, error } = Joi.object({
       phone: Joi.string().required(),
       password: Joi.string().required(),
     }).validate(req.body);
-    if (error != null) {
-      res.status(400).send(error);
-      return;
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { phone, password } = value;
 
-    try {
-      let userRepo = await AppDataSource.getRepository(User);
-      var user = await userRepo.findOneBy({ phone: phone });
-      if (!user) {
-        res.status(401).send({
-          msg: "User account does not exist",
-        });
-        return;
-      }
-    } catch (error) {
-      res.status(500).json({ error: error });
+    let userRepo = await AppDataSource.getRepository(User);
+    var user = await userRepo.findOneBy({ phone: phone });
+    if (!user) {
+      res.status(401).send({
+        msg: "User account does not exist",
+      });
       return;
     }
 
     // validate
     if ((await user.validatePassword(password)) === false) {
-      res.status(401).send({
+      return res.status(401).send({
         message: "Incorrect password",
       });
-      return;
     }
 
     const token = jwt.sign({ id: user.id, role: user.role }, secret, {
       expiresIn: expiresInSecs,
     });
-
-    const expiresAt = Date.now();
 
     res.status(200).send({
       id: user.id,

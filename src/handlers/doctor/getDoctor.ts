@@ -21,9 +21,7 @@ export async function getDoctor(req: Request, res: Response) {
       user_id: Joi.number().optional(),
     }).validate(req.query);
 
-    if (error) {
-      return res.status(400).send(error.message);
-    }
+    if (error) return res.status(400).send(error.message);
     const { id, user_id } = value;
 
     let doctor;

@@ -16,10 +16,7 @@ export async function deleteAppointment(req: Request, res: Response) {
     });
 
     const { value, error } = schema.validate(req.params);
-    if (error != null) {
-      console.error(error);
-      return res.status(401).send(error);
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { id } = value;
 

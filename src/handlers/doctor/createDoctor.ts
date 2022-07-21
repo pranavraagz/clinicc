@@ -17,10 +17,7 @@ export async function createDoctor(req: Request, res: Response) {
     });
 
     const { value, error } = schema.validate(req.body);
-    if (error) {
-      logger.warn(error);
-      return res.status(400).send(error.message);
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { user_id } = value;
 

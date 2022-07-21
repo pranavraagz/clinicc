@@ -16,10 +16,7 @@ export async function deletePatient(req: Request, res: Response) {
       id: Joi.number().required(),
     }).validate(req.params);
 
-    if (error != null) {
-      res.status(401).json({ error: error.message });
-      return;
-    }
+    if (error) return res.status(400).send(error.message);
     const { id } = value;
 
     const patient = await AppDataSource.manager

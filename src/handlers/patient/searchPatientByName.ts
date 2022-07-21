@@ -18,10 +18,7 @@ export async function searchPatientByName(req: Request, res: Response) {
     });
 
     const { value, error } = schema.validate(req.query);
-    if (error != null) {
-      logger.warn(error);
-      res.status(401).json({ error: error.message });
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { name, limit } = value;
 

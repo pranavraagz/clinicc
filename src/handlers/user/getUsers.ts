@@ -20,9 +20,7 @@ export async function getUsers(req: Request, res: Response) {
       phone: Joi.string().optional(),
     }).validate(req.query);
 
-    if (error) {
-      return res.status(400).send(error.message);
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { offset, limit, name, phone } = value;
 

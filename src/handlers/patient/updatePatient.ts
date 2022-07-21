@@ -24,10 +24,7 @@ export async function updatePatient(req: Request, res: Response) {
     });
 
     const { value, error } = schema.validate(req.body);
-    if (error != null) {
-      logger.warn(error);
-      return res.status(400).json({ error: error.message });
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { id, name, date_of_birth, phone, sex, address, altphone, email } =
       value;
@@ -36,9 +33,7 @@ export async function updatePatient(req: Request, res: Response) {
       .getRepository(Patient)
       .findOneBy({ id: parseInt(id) });
 
-    if (!patient) {
-      return res.status(400).send("Not found");
-    }
+    if (!patient) return res.status(404).send("Not found");
 
     patient.name = name ?? patient.name;
     patient.dob = date_of_birth ?? patient.dob;

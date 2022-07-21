@@ -18,13 +18,11 @@ export async function attendAppointment(req: Request, res: Response) {
       isAttended: Joi.bool().optional().default(false),
     }).validate(req.query);
 
-    if (error != null) {
-      return res.status(400).send(error);
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { id, isAttended } = value;
 
-    const result = await AppDataSource.manager
+    await AppDataSource.manager
       .getRepository(Appointment)
       .update({ id: id }, { isAttended: isAttended });
 

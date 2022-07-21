@@ -20,10 +20,7 @@ export async function getAllPatients(req: Request, res: Response) {
       phone: Joi.string().optional(),
     }).validate(req.query);
 
-    if (error != null) {
-      res.status(401).json({ error: error.message });
-      return;
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { offset, limit, name, phone } = value;
 

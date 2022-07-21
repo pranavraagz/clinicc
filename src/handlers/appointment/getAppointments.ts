@@ -22,9 +22,7 @@ export async function getAppointments(req: Request, res: Response) {
       is_paid_only: Joi.bool().optional(),
     }).validate(req.query);
 
-    if (error != null) {
-      return res.status(400).json({ error: error.message });
-    }
+    if (error) return res.status(400).send(error.message);
 
     const { offset, limit, from, to, doctor_id, is_paid_only } = value;
 
