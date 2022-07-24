@@ -29,9 +29,7 @@ export async function updateUser(req: Request, res: Response) {
 
     // Ensure the ID corresponds to existing user
     const user = await AppDataSource.getRepository(User).findOneBy({ id: id });
-    if (!user) {
-      return res.status(400).send("User does not exist");
-    }
+    if (!user) return res.status(400).send("User does not exist");
 
     // If phone number is to be updated, ensure it is not being used by another account already
     if (phone) {

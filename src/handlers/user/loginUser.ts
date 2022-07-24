@@ -26,18 +26,11 @@ export async function loginUser(req: Request, res: Response) {
 
     let userRepo = await AppDataSource.getRepository(User);
     var user = await userRepo.findOneBy({ phone: phone });
-    if (!user) {
-      res.status(401).send({
-        msg: "User account does not exist",
-      });
-      return;
-    }
+    if (!user) return res.status(404).send("User account does not exist");
 
     // validate
     if ((await user.validatePassword(password)) === false) {
-      return res.status(401).send({
-        message: "Incorrect password",
-      });
+      return res.status(403).send("Incorrect password");
     }
 
     const token = jwt.sign({ id: user.id, role: user.role }, secret, {
