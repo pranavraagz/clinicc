@@ -12,11 +12,11 @@ import { Appointment } from "./appointment";
 import * as argon2 from "argon2";
 import { Doctor } from "./doctor";
 
-type UserRole = "staff" | "doctor" | "admin";
+type UserRole = "staff" | "doctor" | "admin" | "superadmin";
 
 @Entity()
 export class User extends BaseEntity {
-  static validRoles = ["staff", "doctor", "admin"];
+  static validRoles = ["staff", "doctor", "admin", "superadmin"];
   @PrimaryGeneratedColumn()
   id: number;
   @Column("varchar")

@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "dev": "nodemon src/index.ts",
-    "prod": "tsc && node ./dist/index.js --e NODE_ENV=production",
+    "prod": "tsc && NODE_ENV=production node ./dist/index.js",
     "pop-patient": "ts-node src/scripts/addPatient.ts",
     "superadmin": "ts-node src/scripts/createSuperAdmin.ts",
     "admin": "ts-node src/scripts/createAdmin.ts",
