@@ -38,7 +38,7 @@ app.use(
   })
 );
 
-if (process.env.NODE_ENV == "production") app.use("/", express.static("dist/"));
+if (process.env.NODE_ENV == "production") app.use("/", express.static(__dirname + "/dist"));
 app.use("/api/v1", apiRouter);
 
 const dataSourceInitTimer = logger.startTimer();
