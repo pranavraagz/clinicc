@@ -46,6 +46,7 @@ export async function loginUser(req: Request, res: Response) {
       jwt: token,
       role: user.role,
     });
+    logger.info(`${user.name} has logged in`);
   } catch (error) {
     logger.error(error);
     res.status(500).send(error);

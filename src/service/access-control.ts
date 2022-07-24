@@ -5,8 +5,6 @@ export const ac = new AccessControl();
 ac.grant("staff")
   .createAny("patient")
   .readAny("patient")
-  .updateAny("patient")
-  .deleteAny("patient")
   .createAny("appointment")
   .readAny("appointment")
   .updateAny("appointment")
@@ -40,5 +38,7 @@ ac.grant("admin")
   .readOwn("admin")
   .updateOwn("admin")
   .read("backup");
+
+ac.grant("superadmin").extend("admin").delete("user");
 
 ac.lock();

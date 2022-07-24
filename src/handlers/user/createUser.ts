@@ -47,6 +47,9 @@ export async function createUser(req: Request, res: Response) {
     }
 
     res.sendStatus(201);
+    logger.info(
+      `User ID ${req.user?.id} has created a new user ${user.name} (${user.id})`
+    );
   } catch (error) {
     logger.error(error);
     res.status(500).send(error);
